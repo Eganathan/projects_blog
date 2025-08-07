@@ -1,17 +1,16 @@
 ---
-title: "Personal Budget Tracker"
-date: 2024-11-20
+title: "Spendora- Personal Budget Tracker"
+date: 2025-08-09
 description: "A simple yet powerful budget tracking application with interactive charts and expense categorization"
-tags: ["javascript", "html", "css", "finance", "pwa"]
+tags: ["javascript", "html", "css", "finance","pwa"]
 status: "live"
-github: "https://github.com/eknath/budget-tracker"
-demo: "https://budget.eknath.dev"
-website: "https://budget.eknath.dev"
+demo: "https://spendora.eknath.dev"
+website: "https://spendora.eknath.dev"
 ---
 
 # Personal Budget Tracker
 
-A lightweight, client-side budget tracking application that helps you monitor your income, expenses, and financial goals without compromising your privacy.
+A lightweight, client-side budget tracking application that helps you monitor your income, expenses, and financial goals without compromising your privacy, i was using online sheets though they are nice some of my friends found it hard to visualize their financial picture, this tool is build for me and them to help us visualize how we are utilizing the amount, figure out what is draining the budget and whats not etc.
 
 ## Key Features
 

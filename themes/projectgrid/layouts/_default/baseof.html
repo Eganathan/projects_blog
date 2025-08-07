@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+    <meta name="description" content="{{ if .Description }}{{ .Description }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+    
+    <style>
+        :root {
+            --bg-primary: #fafafa;
+            --bg-secondary: white;
+            --text-primary: #333;
+            --text-secondary: #7f8c8d;
+            --text-muted: #666;
+            --border-color: #e1e5e9;
+            --accent-color: #2c3e50;
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #121212;
+            --bg-secondary: #1e1e1e;
+            --text-primary: #e4e4e4;
+            --text-secondary: #a0a0a0;
+            --text-muted: #888;
+            --border-color: #333;
+            --accent-color: #64b5f6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-primary);
+            transition: color 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 0;
+            margin-bottom: 40px;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .site-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .site-description {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-top: 4px;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-content {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        nav a:hover {
+            color: var(--accent-color);
+        }
+        
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 20px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .theme-toggle:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+        
+        main {
+            min-height: 60vh;
+        }
+        
+        footer {
+            margin-top: 80px;
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            text-align: center;
+            font-size: 14px;
+            transition: border-color 0.3s ease, color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <a href="/" class="site-title">{{ .Site.Title }}</a>
+                    <div class="site-description">{{ .Site.Params.description }}</div>
+                </div>
+                <div class="nav-content">
+                    <nav>
+                        <a href="/">Home</a>
+                        <a href="/projects">Projects</a>
+                    </nav>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+                        <span class="theme-icon">🌙</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            {{ block "main" . }}{{ end }}
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; {{ now.Format "2006" }} {{ .Site.Params.author }}. Built with Hugo.</p>
+        </div>
+    </footer>
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const themeIcon = document.querySelector('.theme-icon');
+            themeIcon.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        }
+        
+        // Initialize theme on page load
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 
+                             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            
+            const themeIcon = document.querySelector('.theme-icon');
+            if (themeIcon) {
+                themeIcon.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+            }
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+{{ define "main" }}
+<style>
+    .hero {
+        text-align: center;
+        margin-bottom: 60px;
+    }
+    
+    .hero h1 {
+        font-size: 48px;
+        font-weight: 700;
+        color: var(--accent-color);
+        margin-bottom: 16px;
+        transition: color 0.3s ease;
+    }
+    
+    .hero p {
+        font-size: 20px;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        transition: color 0.3s ease;
+    }
+    
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 24px;
+        margin-bottom: 40px;
+    }
+    
+    .project-card {
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border: 1px solid var(--border-color);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+        text-decoration: none;
+        color: inherit;
+        display: block;
+    }
+    
+    .project-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        text-decoration: none;
+        color: inherit;
+        border-color: var(--accent-color);
+    }
+    
+    [data-theme="dark"] .project-card {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05);
+        border-color: #333;
+    }
+    
+    [data-theme="dark"] .project-card:hover {
+        box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(100,181,246,0.3);
+        border-color: var(--accent-color);
+    }
+    
+    .project-thumbnail {
+        width: 100%;
+        height: 200px;
+        background: var(--bg-primary);
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-secondary);
+        font-size: 48px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        position: relative;
+    }
+    
+    [data-theme="dark"] .project-thumbnail {
+        background: #0d1117;
+        border-bottom: 1px solid #333;
+    }
+    
+    .project-thumbnail.has-image {
+        color: transparent;
+    }
+    
+    .project-letter {
+        font-size: 64px;
+        font-weight: 700;
+        color: var(--accent-color);
+        text-transform: uppercase;
+        opacity: 0.8;
+        transition: color 0.3s ease, opacity 0.3s ease;
+    }
+    
+    .project-card:hover .project-letter {
+        opacity: 1;
+    }
+    
+    /* Color variations based on first letter */
+    .project-letter[data-letter="A"], .project-letter[data-letter="G"], .project-letter[data-letter="M"], .project-letter[data-letter="S"] { color: #e74c3c; }
+    .project-letter[data-letter="B"], .project-letter[data-letter="H"], .project-letter[data-letter="N"], .project-letter[data-letter="T"] { color: #3498db; }
+    .project-letter[data-letter="C"], .project-letter[data-letter="I"], .project-letter[data-letter="O"], .project-letter[data-letter="U"] { color: #2ecc71; }
+    .project-letter[data-letter="D"], .project-letter[data-letter="J"], .project-letter[data-letter="P"], .project-letter[data-letter="V"] { color: #9b59b6; }
+    .project-letter[data-letter="E"], .project-letter[data-letter="K"], .project-letter[data-letter="Q"], .project-letter[data-letter="W"] { color: #f39c12; }
+    .project-letter[data-letter="F"], .project-letter[data-letter="L"], .project-letter[data-letter="R"], .project-letter[data-letter="X"] { color: #1abc9c; }
+    .project-letter[data-letter="Y"], .project-letter[data-letter="Z"] { color: #e67e22; }
+    
+    [data-theme="dark"] .project-letter[data-letter="A"], [data-theme="dark"] .project-letter[data-letter="G"], [data-theme="dark"] .project-letter[data-letter="M"], [data-theme="dark"] .project-letter[data-letter="S"] { color: #ff6b6b; }
+    [data-theme="dark"] .project-letter[data-letter="B"], [data-theme="dark"] .project-letter[data-letter="H"], [data-theme="dark"] .project-letter[data-letter="N"], [data-theme="dark"] .project-letter[data-letter="T"] { color: #74b9ff; }
+    [data-theme="dark"] .project-letter[data-letter="C"], [data-theme="dark"] .project-letter[data-letter="I"], [data-theme="dark"] .project-letter[data-letter="O"], [data-theme="dark"] .project-letter[data-letter="U"] { color: #55efc4; }
+    [data-theme="dark"] .project-letter[data-letter="D"], [data-theme="dark"] .project-letter[data-letter="J"], [data-theme="dark"] .project-letter[data-letter="P"], [data-theme="dark"] .project-letter[data-letter="V"] { color: #a29bfe; }
+    [data-theme="dark"] .project-letter[data-letter="E"], [data-theme="dark"] .project-letter[data-letter="K"], [data-theme="dark"] .project-letter[data-letter="Q"], [data-theme="dark"] .project-letter[data-letter="W"] { color: #fdcb6e; }
+    [data-theme="dark"] .project-letter[data-letter="F"], [data-theme="dark"] .project-letter[data-letter="L"], [data-theme="dark"] .project-letter[data-letter="R"], [data-theme="dark"] .project-letter[data-letter="X"] { color: #81ecec; }
+    [data-theme="dark"] .project-letter[data-letter="Y"], [data-theme="dark"] .project-letter[data-letter="Z"] { color: #fab1a0; }
+    
+    .project-card {
+        position: relative;
+    }
+    
+    .project-date {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+        z-index: 2;
+        transition: background-color 0.3s ease;
+        backdrop-filter: blur(4px);
+    }
+    
+    [data-theme="dark"] .project-date {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+    }
+    
+    .project-status {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        z-index: 2;
+        backdrop-filter: blur(4px);
+        transition: all 0.3s ease;
+    }
+    
+    .status-live {
+        background: rgba(46, 204, 113, 0.9);
+        color: white;
+    }
+    
+    .status-in-progress {
+        background: rgba(241, 196, 15, 0.9);
+        color: white;
+    }
+    
+    .status-hold {
+        background: rgba(230, 126, 34, 0.9);
+        color: white;
+    }
+    
+    .status-archived {
+        background: rgba(149, 165, 166, 0.9);
+        color: white;
+    }
+    
+    [data-theme="dark"] .project-status {
+        backdrop-filter: blur(6px);
+    }
+    
+    .project-content {
+        padding: 24px;
+    }
+    
+    .project-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: 8px;
+        transition: color 0.3s ease;
+    }
+    
+    .project-description {
+        color: var(--text-secondary);
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+        transition: color 0.3s ease;
+    }
+    
+    .project-tags {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    
+    .tag {
+        background: var(--border-color);
+        color: var(--text-primary);
+        padding: 4px 8px;
+        border-radius: 16px;
+        font-size: 11px;
+        font-weight: 500;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .no-projects {
+        text-align: center;
+        color: var(--text-secondary);
+        font-style: italic;
+        margin: 60px 0;
+        transition: color 0.3s ease;
+    }
+</style>
+
+<div class="hero">
+    <h1>My Projects</h1>
+    <p>A collection of my experiments, tools, and creative endeavors</p>
+</div>
+
+{{ $projects := where .Site.RegularPages "Section" "projects" }}
+{{ if $projects }}
+<div class="projects-grid">
+    {{ range $projects }}
+    <a href="{{ .RelPermalink }}" class="project-card">
+        <div class="project-date">{{ .Date.Format "Jan 2, 2006" }}</div>
+        {{ with .Params.status }}
+        <div class="project-status status-{{ . }}">{{ . }}</div>
+        {{ end }}
+        <div class="project-thumbnail{{ with .Params.thumbnail }} has-image{{ end }}" {{ with .Params.thumbnail }}style="background-image: url('{{ . }}')"{{ end }}>
+            {{ if not .Params.thumbnail }}
+            {{ $firstLetter := upper (substr .Title 0 1) }}
+            <div class="project-letter" data-letter="{{ $firstLetter }}">{{ $firstLetter }}</div>
+            {{ end }}
+        </div>
+        <div class="project-content">
+            <div class="project-title">{{ .Title }}</div>
+            <div class="project-description">{{ .Params.description | default .Summary }}</div>
+            <div class="project-tags">
+                {{ range .Params.tags }}
+                <span class="tag">{{ . }}</span>
+                {{ end }}
+            </div>
+        </div>
+    </a>
+    {{ end }}
+</div>
+{{ else }}
+<div class="no-projects">
+    <p>No projects found. Create your first project in the <code>content/projects/</code> directory!</p>
+</div>
+{{ end }}
+
+{{ end }}

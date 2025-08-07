@@ -1,0 +1,369 @@
+{{ define "main" }}
+<style>
+    .project-header {
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: background-color 0.3s ease;
+    }
+    
+    [data-theme="dark"] .project-header {
+        box-shadow: 0 2px 8px rgba(255,255,255,0.05);
+    }
+    
+    .project-title {
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--accent-color);
+        margin-bottom: 16px;
+        transition: color 0.3s ease;
+    }
+    
+    .project-description {
+        font-size: 18px;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 24px;
+        transition: color 0.3s ease;
+    }
+    
+    .project-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 1px solid var(--border-color);
+        transition: border-color 0.3s ease;
+    }
+    
+    .project-date {
+        color: var(--text-muted);
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.3s ease;
+    }
+    
+    .project-tags {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+    
+    .tag {
+        background: var(--border-color);
+        color: var(--text-primary);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .project-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    
+    .action-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+    
+    .action-link.github {
+        background: #24292e;
+        color: white;
+    }
+    
+    .action-link.github:hover {
+        background: #1a1e22;
+        color: white;
+    }
+    
+    .action-link.demo {
+        background: #3498db;
+        color: white;
+    }
+    
+    .action-link.demo:hover {
+        background: #2980b9;
+        color: white;
+    }
+    
+    .action-link.website {
+        background: #27ae60;
+        color: white;
+    }
+    
+    .action-link.website:hover {
+        background: #219a52;
+        color: white;
+    }
+    
+    .action-link.download {
+        background: #e74c3c;
+        color: white;
+    }
+    
+    .action-link.download:hover {
+        background: #c0392b;
+        color: white;
+    }
+    
+    .project-content {
+        background: var(--bg-secondary);
+        border-radius: 12px;
+        padding: 40px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        line-height: 1.7;
+        transition: background-color 0.3s ease;
+    }
+    
+    [data-theme="dark"] .project-content {
+        box-shadow: 0 2px 8px rgba(255,255,255,0.05);
+    }
+    
+    .project-content h1,
+    .project-content h2,
+    .project-content h3,
+    .project-content h4,
+    .project-content h5,
+    .project-content h6 {
+        color: var(--accent-color);
+        margin-top: 32px;
+        margin-bottom: 16px;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+    
+    .project-content h1 { font-size: 28px; }
+    .project-content h2 { font-size: 24px; }
+    .project-content h3 { font-size: 20px; }
+    
+    .project-content p {
+        margin-bottom: 16px;
+        color: var(--text-primary);
+        transition: color 0.3s ease;
+    }
+    
+    .project-content a {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+    
+    .project-content a:hover {
+        text-decoration: underline;
+    }
+    
+    .project-content code {
+        background: var(--bg-primary);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.9em;
+        color: #e74c3c;
+        transition: background-color 0.3s ease;
+    }
+    
+    [data-theme="dark"] .project-content code {
+        color: #ff6b6b;
+    }
+    
+    .project-content pre {
+        background: var(--bg-primary);
+        padding: 20px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 20px 0;
+        transition: background-color 0.3s ease;
+    }
+    
+    .project-content pre code {
+        background: none;
+        padding: 0;
+        color: inherit;
+    }
+    
+    .project-content blockquote {
+        border-left: 4px solid var(--accent-color);
+        padding-left: 20px;
+        margin: 20px 0;
+        color: var(--text-secondary);
+        font-style: italic;
+        transition: border-color 0.3s ease, color 0.3s ease;
+    }
+    
+    .project-content ul,
+    .project-content ol {
+        padding-left: 24px;
+        margin-bottom: 16px;
+    }
+    
+    .project-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 20px 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: box-shadow 0.3s ease;
+    }
+    
+    [data-theme="dark"] .project-content img {
+        box-shadow: 0 2px 8px rgba(255,255,255,0.1);
+    }
+    
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text-secondary);
+        text-decoration: none;
+        margin-bottom: 20px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+    
+    .back-link:hover {
+        color: var(--accent-color);
+    }
+    
+    .project-status-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-radius: 16px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-right: 12px;
+    }
+    
+    .status-live {
+        background: rgba(46, 204, 113, 0.15);
+        color: #27ae60;
+        border: 1px solid rgba(46, 204, 113, 0.3);
+    }
+    
+    .status-in-progress {
+        background: rgba(241, 196, 15, 0.15);
+        color: #f1c40f;
+        border: 1px solid rgba(241, 196, 15, 0.3);
+    }
+    
+    .status-hold {
+        background: rgba(230, 126, 34, 0.15);
+        color: #d35400;
+        border: 1px solid rgba(230, 126, 34, 0.3);
+    }
+    
+    .status-archived {
+        background: rgba(149, 165, 166, 0.15);
+        color: #7f8c8d;
+        border: 1px solid rgba(149, 165, 166, 0.3);
+    }
+    
+    [data-theme="dark"] .project-status-badge.status-live {
+        background: rgba(46, 204, 113, 0.2);
+        color: #2ecc71;
+    }
+    
+    [data-theme="dark"] .project-status-badge.status-in-progress {
+        background: rgba(241, 196, 15, 0.2);
+        color: #f39c12;
+    }
+    
+    [data-theme="dark"] .project-status-badge.status-hold {
+        background: rgba(230, 126, 34, 0.2);
+        color: #e67e22;
+    }
+    
+    [data-theme="dark"] .project-status-badge.status-archived {
+        background: rgba(149, 165, 166, 0.2);
+        color: #95a5a6;
+    }
+</style>
+
+<a href="/" class="back-link">
+    ← Back to Projects
+</a>
+
+<article>
+    <header class="project-header">
+        <h1 class="project-title">{{ .Title }}</h1>
+        
+        {{ with .Params.description }}
+        <div class="project-description">{{ . }}</div>
+        {{ end }}
+        
+        <div class="project-meta">
+            <div class="project-date">
+                📅 {{ .Date.Format "January 2, 2006" }}
+                {{ with .Params.status }}
+                <span class="project-status-badge status-{{ . }}">{{ . }}</span>
+                {{ end }}
+            </div>
+            
+            {{ if .Params.tags }}
+            <div class="project-tags">
+                {{ range .Params.tags }}
+                <span class="tag">{{ . }}</span>
+                {{ end }}
+            </div>
+            {{ end }}
+        </div>
+        
+        {{ if or .Params.github .Params.demo .Params.website .Params.download .Params.actions }}
+        <div class="project-actions">
+            {{ with .Params.github }}
+            <a href="{{ . }}" class="action-link github" target="_blank">
+                🔗 GitHub
+            </a>
+            {{ end }}
+            
+            {{ with .Params.demo }}
+            <a href="{{ . }}" class="action-link demo" target="_blank">
+                🚀 Live Demo
+            </a>
+            {{ end }}
+            
+            {{ with .Params.website }}
+            <a href="{{ . }}" class="action-link website" target="_blank">
+                🌐 Website
+            </a>
+            {{ end }}
+            
+            {{ with .Params.download }}
+            <a href="{{ . }}" class="action-link download" target="_blank">
+                📥 Download
+            </a>
+            {{ end }}
+            
+            {{ range .Params.actions }}
+            <a href="{{ .url }}" class="action-link {{ .type | default "demo" }}" {{ if .external }}target="_blank"{{ end }}>
+                {{ .icon | default "🔗" }} {{ .label }}
+            </a>
+            {{ end }}
+        </div>
+        {{ end }}
+    </header>
+    
+    <div class="project-content">
+        {{ .Content }}
+    </div>
+</article>
+
+{{ end }}

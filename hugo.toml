@@ -1,0 +1,13 @@
+baseURL = "https://projects.eknath.dev"
+languageCode = "en-us"
+title = "Projects"
+theme = "projectgrid"
+
+[params]
+  description = "My projects and experiments"
+  author = "Eknath"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
